@@ -1,0 +1,2 @@
+# resource name : resource path
+defaultTile : defaultTile.png

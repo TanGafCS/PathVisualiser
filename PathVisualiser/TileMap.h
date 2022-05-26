@@ -5,7 +5,7 @@ class TileMap
 {
 public:
 	TileMap(int cols, int rows);
-	~TileMap();
+	//~TileMap();
 	std::vector<Tile>& operator[](int index);
 private:
 	std::vector<std::vector<Tile>> tiles;

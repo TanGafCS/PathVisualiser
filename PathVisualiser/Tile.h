@@ -7,5 +7,5 @@ public:
 	int x, y;	// Position
 	sf::Texture& texture;
 	Tile(int x, int y, sf::Texture&);
-	~Tile();
+	//~Tile();
 };

@@ -11,19 +11,22 @@ class ResourceLoader
 {
 public:
 	// Singleton
-	static ResourceLoader& instance()
+	static ResourceLoader& Instance()
 	{
 		static ResourceLoader instance;
 		return instance;
 	}
-	ResourceLoader(ResourceLoader const&) = delete;
-	void operator=(ResourceLoader const&) = delete;
 	
-	// Resource loading
-	sf::Texture getTexture(std::string id);
+	// Get reference to texture
+	sf::Texture& GetTexture(std::string id);
+
+	static const char resourceDelimiter = ':';
+	const std::string resourcesPath{ "Resources/" };
 private:
 	ResourceLoader();
 	static ResourceLoader* instance;
+
+	void LoadTextures();
 	std::unordered_map<std::string, sf::Texture> resourceMap;
 };
 

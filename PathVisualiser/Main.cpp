@@ -5,11 +5,11 @@
 
 int main()
 {
-    // instantiate TileMap
-    TileMap grid(6, 6);
-
     // initialise visualiser
     sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!");
+
+    // instantiate TileMap
+    TileMap grid(6, 6);
 
     while (window.isOpen())
     {
