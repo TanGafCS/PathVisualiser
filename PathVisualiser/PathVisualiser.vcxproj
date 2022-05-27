@@ -23,12 +23,14 @@
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="Visualiser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Visualiser.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources.txt" />

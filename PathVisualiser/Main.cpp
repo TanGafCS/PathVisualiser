@@ -1,15 +1,15 @@
 #include "Main.h"
 #include "TileMap.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
+#include "Visualiser.h"
 
 int main()
 {
     // initialise visualiser
+    Visualiser visualiser;
     sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!");
 
     // instantiate TileMap
-    TileMap grid(6, 6);
+    TileMap tileMap(6, 6);
 
     while (window.isOpen())
     {
@@ -22,22 +22,16 @@ int main()
         }
 
         // Run logic updates
+        
 
         // Draw
-        DrawToScreen(window);
+        sf::Color clearColour(255, 0, 255);
+        window.clear(clearColour);
+
+        visualiser.DrawMatrix(window, tileMap);
+
+        window.display();
     }
 
     return 0;
-}
-
-void DrawToScreen(sf::RenderWindow& window)
-{
-    sf::Color clearColour(255, 0, 255);
-    window.clear(clearColour);
-    
-    // update visuals of dirty cards
-
-    // draw all visuals
-
-    window.display();
 }

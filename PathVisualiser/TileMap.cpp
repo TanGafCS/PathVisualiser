@@ -29,7 +29,12 @@ TileMap::TileMap(int cols, int rows)
 //	delete tiles;
 //}
 
-std::vector<Tile>& TileMap::operator[](int index)
+std::pair<int, int> TileMap::Size() const
+{
+	return {tiles.size(), tiles[0].size()};
+}
+
+std::vector<Tile> TileMap::operator[](int index) const
 {
 	return tiles[index];
 }

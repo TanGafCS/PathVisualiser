@@ -6,7 +6,8 @@ class TileMap
 public:
 	TileMap(int cols, int rows);
 	//~TileMap();
-	std::vector<Tile>& operator[](int index);
+	std::pair<int, int> Size() const;	//Return rows, columns pair
+	std::vector<Tile> operator[](int) const;
 private:
 	std::vector<std::vector<Tile>> tiles;
 };
