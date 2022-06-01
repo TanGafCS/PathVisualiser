@@ -5,6 +5,8 @@ class Visualiser
 {
 public:
 	void DrawMatrix(sf::RenderWindow&, const TileMap&);
+	Visualiser();
 private:
+	sf::Font font;
 };
 

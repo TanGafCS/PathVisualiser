@@ -19,6 +19,7 @@ public:
 	
 	// Get reference to texture
 	sf::Texture& GetTexture(std::string id);
+	sf::Font& GetFont();
 
 	static const char resourceDelimiter = ':';
 	const std::string resourcesPath{ "Resources/" };
@@ -26,7 +27,9 @@ private:
 	ResourceLoader();
 	static ResourceLoader* instance;
 
+	void LoadFont();
 	void LoadTextures();
 	std::unordered_map<std::string, sf::Texture> resourceMap;
+	sf::Font font;
 };
 

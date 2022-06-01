@@ -5,8 +5,8 @@
 int main()
 {
     // initialise visualiser
-    Visualiser visualiser;
     sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!", sf::Style::Close);
+    Visualiser visualiser;
 
     // instantiate TileMap
     TileMap tileMap(16, 16);

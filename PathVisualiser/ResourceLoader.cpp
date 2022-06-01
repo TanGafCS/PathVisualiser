@@ -7,6 +7,7 @@
 ResourceLoader::ResourceLoader()
 {
     LoadTextures();
+    LoadFont();
 }
 
 void ExtractTokens(std::string& line, std::string& resourceName, std::string& resourcePath)
@@ -16,6 +17,11 @@ void ExtractTokens(std::string& line, std::string& resourceName, std::string& re
     int findIndex = line.find(ResourceLoader::resourceDelimiter);
     resourceName = line.substr(0, findIndex);
     resourcePath = line.substr(findIndex + 1, line.size() - findIndex);
+}
+
+void ResourceLoader::LoadFont()
+{
+    font.loadFromFile("Resources/Fonts/Roboto-Black.ttf");
 }
 
 void ResourceLoader::LoadTextures()
@@ -32,7 +38,7 @@ void ResourceLoader::LoadTextures()
         ExtractTokens(line, resourceName, resourcePath);
         // Load texture and add to resourceMap;
         sf::Texture texture;
-        texture.loadFromFile("Resources/" + resourcePath);
+        texture.loadFromFile(resourcesPath + resourcePath);
         resourceMap.insert({resourceName, texture});
     }
 }
@@ -40,4 +46,9 @@ void ResourceLoader::LoadTextures()
 sf::Texture& ResourceLoader::GetTexture(std::string id)
 {
     return resourceMap[id];
+}
+
+sf::Font& ResourceLoader::GetFont()
+{
+    return font;
 }
