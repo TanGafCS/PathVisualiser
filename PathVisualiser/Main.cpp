@@ -6,10 +6,10 @@ int main()
 {
     // initialise visualiser
     Visualiser visualiser;
-    sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!", sf::Style::Close);
 
     // instantiate TileMap
-    TileMap tileMap(6, 6);
+    TileMap tileMap(16, 16);
 
     while (window.isOpen())
     {
@@ -24,8 +24,8 @@ int main()
         // Run logic updates
         
 
-        // Draw
-        sf::Color clearColour(255, 0, 255);
+        // Draw black bg
+        sf::Color clearColour(0, 0, 0);
         window.clear(clearColour);
 
         visualiser.DrawMatrix(window, tileMap);
