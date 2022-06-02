@@ -29,6 +29,29 @@ TileMap::TileMap(int cols, int rows)
 //	delete tiles;
 //}
 
+std::vector<Tile*> TileMap::GetNeighbours(Tile& tile)
+{
+	int x = tile.x;
+	int y = tile.y;
+	std::vector<Tile*> neighbours;
+	int rows, cols;
+	std::tie(rows, cols) = this->Size();
+
+	for (int i = y - 1; i <= y + 1; i++)
+	{
+		for (int j = x - 1; j <= x + 1; j++)
+		{
+			if (i == y && j == x) continue;
+			if (i >= 0 && i < rows && j >= 0 && j < cols)
+			{
+				neighbours.push_back(&tiles[i][j]);
+			}
+		}
+	}
+
+	return neighbours;
+}
+
 std::pair<int, int> TileMap::Size() const
 {
 	return {tiles.size(), tiles[0].size()};

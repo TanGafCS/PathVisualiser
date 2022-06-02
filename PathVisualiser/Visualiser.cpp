@@ -35,13 +35,16 @@ void Visualiser::DrawMatrix(sf::RenderWindow& window, const TileMap& tileMap)
 			sprite.setTexture(tex);
 			sprite.setScale(scale, scale);
 			sprite.setPosition(sf::Vector2f(x, y));
+
 			// prepare text
 			float textFontSize = tileLen * 0.3;
-			sf::Text text("12", font, 12);
+			std::string fCostStr = std::string("12");
+			sf::Text text(fCostStr, font, textFontSize);
 			auto textBox = text.getLocalBounds();
 			auto freeTileSpaceX = tileLen - textBox.width;
 			auto freeTileSpaceY = tileLen - textBox.height;
-			text.setPosition(x + (freeTileSpaceX / 2), y + (freeTileSpaceY / 2));
+			text.setPosition(x + (freeTileSpaceX / 2) - textBox.left,
+							y - ((textFontSize + textBox.top) / 2) + tileLen/2);
 
 			window.draw(sprite);
 			window.draw(text);

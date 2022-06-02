@@ -1,15 +1,20 @@
 #include "Main.h"
 #include "TileMap.h"
 #include "Visualiser.h"
+#include "AStar.h"
 
 int main()
 {
     // initialise visualiser
     sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!", sf::Style::Close);
+    window.setKeyRepeatEnabled(false);
     Visualiser visualiser;
 
     // instantiate TileMap
-    TileMap tileMap(16, 16);
+    TileMap tileMap(12, 12);
+    Pathfinder* pathfinder;
+    AStar aStar(tileMap, tileMap[0][0], tileMap[11][11]);
+    pathfinder = &aStar;
 
     while (window.isOpen())
     {
@@ -19,6 +24,13 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::EventType::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Space)
+                {
+                    pathfinder->Step();
+                }
+            }
         }
 
         // Run logic updates

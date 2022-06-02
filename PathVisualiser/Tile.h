@@ -1,10 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class Tile
+struct Tile
 {
 public:
 	int x, y;	// Position
+	int fCost;
 	sf::Texture& texture;
 	Tile(int x, int y, sf::Texture&);
 	//~Tile();
