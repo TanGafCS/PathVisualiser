@@ -5,6 +5,8 @@
 
 void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 {
+	activeTiles.clear();
+
 	auto loader = ResourceLoader::Instance();
 	// Scale tiles to fit the screen. Scaled on X axis, assuming X and Y are equal.
 	int rows, cols;
@@ -12,16 +14,14 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 	float tileSizeDefault = 64.f;
 	float innerTileMult = 0.05f;
 	float margin = 5.f;
-	auto screenSize = window.getSize();
-	float screenLen = screenSize.x;
+	float screenLen = screenSideLength;
 	float effectiveScreenLen = screenLen - margin * 2;	// The area of the screen available to us
 	float interTileMargin = (effectiveScreenLen * innerTileMult);	// The length of 
 	int gaps = cols - 1;
 	float gapLen = (effectiveScreenLen * innerTileMult) / (cols - 1); // The gaps we need after each tile drawn
 	float tileLen = (effectiveScreenLen - interTileMargin) / cols;
-	//ResourceLoader& resources = ResourceLoader::Instance();
-
 	float scale = tileLen / tileSizeDefault;
+
 	// Place tiles onto screen.
 	for (int row = 0; row < rows; ++row)
 	{
@@ -36,6 +36,10 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 			{
 				tile.texture = &loader.GetTexture("obstacleTile");
 			}
+			else
+			{
+				tile.texture = &loader.GetTexture("defaultTile");
+			}
 
 			// prepare tile
 			float x = margin + (col * (tileLen + gapLen));
@@ -45,6 +49,7 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 			sprite.setTexture(tex);
 			sprite.setScale(scale, scale);
 			sprite.setPosition(sf::Vector2f(x, y));
+			activeTiles.push_back(TileRect(&tile, sprite.getGlobalBounds()));
 
 			window.draw(sprite);
 			
@@ -73,7 +78,27 @@ void Visualiser::DrawCost(Tile& tile, float tileLen, float x, float y, sf::Rende
 	}
 }
 
+Tile& Visualiser::GetTile(int x, int y)
+{
+	sf::FloatRect mouseRect(x, y, 1, 1);
+	for (auto i = 0; i < activeTiles.size(); i++)
+	{
+		TileRect& tr = activeTiles[i];
+		if (tr.rect.intersects(mouseRect))
+		{
+			return *tr.tile;
+		}
+	}
+	return NullTile;
+}
+
 Visualiser::Visualiser()
+	: NullTile()
 {
 	font = ResourceLoader::Instance().GetFont();
+}
+
+TileRect::TileRect(Tile* tile, sf::FloatRect rect)
+	:	tile(tile), rect(rect)
+{
 }

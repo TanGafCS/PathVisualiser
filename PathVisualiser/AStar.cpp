@@ -2,28 +2,9 @@
 #include <iostream>
 
 AStar::AStar(TileMap& tileMap, Tile* start, Tile* goal)
-	: openSet(), tileMap(tileMap), startTile(start), goalTile(goal)
+	: Pathfinder(start, goal), openSet(), tileMap(tileMap)
 {
-	this->openSet.push(startTile);
-
-	/*	Set tiles' hcosts. Use Distance function - it does not
-		overestimate the actual cost, and will return the least-cost path. */
-	for (int i = 0; i < tileMap.Cols(); i++)
-	{
-		for (int j = 0; j < tileMap.Rows(); j++)
-		{
-			Tile& tile = tileMap[i][j];
-			auto hc = Distance(*goal, tileMap[i][j]);
-			tile.hCost = hc;
-
-			tile.gCost = INT_LEAST16_MAX;
-		}
-	}
-
-	// Set starting tile's costs
-	startTile->gCost = 0;
-	startTile->hCost = 0;
-	startTile->fCost = 0;
+	Reset();
 }
 
 int AStar::Distance(Tile& tile1, Tile& tile2)
@@ -39,13 +20,11 @@ void AStar::Step()
 	if (openSet.empty()) return;	// Finished pathing
 
 	auto* cur = openSet.top();
-	if (cur->isClosed)	// Don't reconsider the closed set.
-	{
-		openSet.pop();
-		Step();
-	}
-	cur->isClosed = true;
 	openSet.pop();
+
+	if (cur->isClosed) Step();		// if examining closed tile, skip.
+
+	cur->isClosed = true;
 
 	if (cur == goalTile)
 	{
@@ -64,10 +43,35 @@ void AStar::Step()
 		if (potentialGCost < neighbour->gCost)
 		{
 			neighbour->gCost = potentialGCost;
-			//neighbour->hCost = hCost[neighbour->y][neighbour->x];
 			neighbour->fCost = neighbour->gCost + neighbour->hCost;
 			neighbour->predecessor = cur;
 			openSet.push(neighbour);
 		}
 	}
+}
+
+void AStar::Reset()
+{
+	this->openSet.push(startTile);
+
+	/*	Set tiles' hcosts. Use Distance function - it does not
+		overestimate the actual cost, and will return the least-cost path. */
+	for (int i = 0; i < tileMap.Cols(); i++)
+	{
+		for (int j = 0; j < tileMap.Rows(); j++)
+		{
+			Tile& tile = tileMap[i][j];
+			auto hc = Distance(*goalTile, tileMap[i][j]);
+			tile.hCost = hc;
+			tile.gCost = INT_LEAST16_MAX;
+			tile.fCost = INT_LEAST16_MAX;
+
+			tile.isClosed = false;
+		}
+	}
+
+	// Set starting tile's costs
+	startTile->gCost = 0;
+	startTile->hCost = 0;
+	startTile->fCost = 0;
 }

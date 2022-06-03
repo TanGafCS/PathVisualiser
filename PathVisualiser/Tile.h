@@ -9,6 +9,7 @@ public:
 	bool isObstacle = false, isClosed = false;
 	Tile* predecessor;	// Set when pathing.
 	sf::Texture* texture;
+	Tile();
 	Tile(int x, int y, sf::Texture&);
 	//~Tile();
 };

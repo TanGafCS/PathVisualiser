@@ -7,7 +7,7 @@
 int main()
 {
     // initialise visualiser
-    sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "Pathfinding Visualiser", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(screenSideLength + uiScreenLength, screenSideLength), "Pathfinding Visualiser", sf::Style::Close);
     window.setKeyRepeatEnabled(false);
     Visualiser visualiser;
 
@@ -26,6 +26,7 @@ int main()
     {
         // Handle Inputs
         sf::Event event;
+        auto mPos = sf::Mouse::getPosition(window);
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
@@ -37,6 +38,12 @@ int main()
                     pathfinder->Step();
                     std::cout << pathfinder->IsGoalFound() << std::endl;
                 }
+            }
+            else if (event.type == sf::Event::EventType::MouseButtonPressed)
+            {
+                Tile& hoverTile = visualiser.GetTile(mPos.x, mPos.y);
+                hoverTile.isObstacle = !hoverTile.isObstacle;
+                pathfinder->Reset();
             }
         }
 

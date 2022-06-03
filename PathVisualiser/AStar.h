@@ -11,9 +11,9 @@ public:
 	int Distance(Tile& tile1, Tile& tile2);
 	// Inherited via Pathfinder
 	virtual void Step() override;
+	virtual void Reset() override;
 private:
 	std::priority_queue<Tile*, std::vector<Tile*>, TileComparator> openSet;
-	Tile* startTile, * goalTile;
 	TileMap& tileMap;
 	std::vector<std::vector<int>> gCost, hCost, fCost;
 };
