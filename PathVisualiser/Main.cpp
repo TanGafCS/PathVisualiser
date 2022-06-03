@@ -18,9 +18,6 @@ int main()
     Pathfinder* pathfinder;
     AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
-    tileMap[5][5].isObstacle = true;
-    tileMap[4][5].isObstacle = true;
-    tileMap[6][5].isObstacle = true;
 
     while (window.isOpen())
     {
@@ -31,6 +28,9 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            // Handle tile-related inputs
+            Tile& hoverTile = visualiser.GetTile(mPos.x, mPos.y);
             if (event.type == sf::Event::EventType::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::N)
@@ -38,10 +38,19 @@ int main()
                     pathfinder->Step();
                     std::cout << pathfinder->IsGoalFound() << std::endl;
                 }
+                else if (event.key.code == sf::Keyboard::S)
+                {
+                    pathfinder->startTile = &hoverTile;
+                    pathfinder->Reset();
+                }
+                else if (event.key.code == sf::Keyboard::G)
+                {
+                    pathfinder->goalTile = &hoverTile;
+                    pathfinder->Reset();
+                }
             }
             else if (event.type == sf::Event::EventType::MouseButtonPressed)
             {
-                Tile& hoverTile = visualiser.GetTile(mPos.x, mPos.y);
                 hoverTile.isObstacle = !hoverTile.isObstacle;
                 pathfinder->Reset();
             }
@@ -51,7 +60,7 @@ int main()
         sf::Color clearColour(0, 0, 0);
         window.clear(clearColour);
 
-        visualiser.DrawMap(window, tileMap);
+        visualiser.DrawMap(window, tileMap, *pathfinder);
 
         window.display();
     }

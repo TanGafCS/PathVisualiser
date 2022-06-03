@@ -2,12 +2,13 @@
 #include "Main.h"
 #include "ResourceLoader.h"
 #include <iostream>
+#include "Pathfinder.h"
 
-void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
+void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap, Pathfinder& pathfinder)
 {
 	activeTiles.clear();
 
-	auto loader = ResourceLoader::Instance();
+	auto& loader = ResourceLoader::Instance();
 	// Scale tiles to fit the screen. Scaled on X axis, assuming X and Y are equal.
 	int rows, cols;
 	std::tie(rows, cols) = tileMap.Size();
@@ -28,17 +29,18 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 		for (int col = 0; col < cols; ++col)
 		{
 			Tile& tile = tileMap[row][col];
+			tile.texture = &loader.GetTexture("defaultTile");
 			if (tile.isClosed)
 			{
 				tile.texture = &loader.GetTexture("closedTile");
 			}
-			else if (tileMap[row][col].isObstacle)
+			if (tile.isObstacle)
 			{
 				tile.texture = &loader.GetTexture("obstacleTile");
 			}
-			else
+			if (tile.isPath)
 			{
-				tile.texture = &loader.GetTexture("defaultTile");
+				tile.texture = &loader.GetTexture("pathTile");
 			}
 
 			// prepare tile
@@ -54,28 +56,34 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 			window.draw(sprite);
 			
 			// prepare text
-			DrawCost(tile, tileLen, x, y, window, 0.4, 0.5, 0.5, std::to_string(tile.fCost));
-			DrawCost(tile, tileLen, x, y, window, 0.225, 0.9, 1.08, std::to_string(tile.hCost));
-			DrawCost(tile, tileLen, x, y, window, 0.225, 0.1, 1.08, std::to_string(tile.gCost));
+			if (tile.fCost != INT_LEAST16_MAX)
+			{
+				DrawTileText(tile, tileLen, x, y, window, 0.4, 0.5, 0.5, std::to_string(tile.fCost));
+				DrawTileText(tile, tileLen, x, y, window, 0.225, 0.9, 1.08, std::to_string(tile.hCost));
+				DrawTileText(tile, tileLen, x, y, window, 0.225, 0.1, 1.08, std::to_string(tile.gCost));
+			}
+
+
+			// Start/End point
+			if (&tile == pathfinder.startTile)
+			DrawTileText(tile, tileLen, x, y, window, 0.3, 0.5, 0, "Start");
+			if (&tile == pathfinder.goalTile)
+			DrawTileText(tile, tileLen, x, y, window, 0.3, 0.5, 0, "Goal");
 		}
 	}
 }
 
-void Visualiser::DrawCost(Tile& tile, float tileLen, float x, float y, sf::RenderWindow& window, float fontSizeMult, float xOffset, float yOffset, std::string str)
+void Visualiser::DrawTileText(Tile& tile, float tileLen, float x, float y, sf::RenderWindow& window, float fontSizeMult, float xOffset, float yOffset, std::string str)
 {
+	float textFontSize = tileLen * fontSizeMult;
+	sf::Text text(str, font, textFontSize);
+	auto textBox = text.getLocalBounds();
+	auto freeTileSpaceX = tileLen - textBox.width;
+	auto freeTileSpaceY = tileLen - textBox.height;
+	text.setPosition(x + (freeTileSpaceX * xOffset) - textBox.left,
+		y - ((textFontSize + textBox.top) * yOffset) + tileLen * yOffset);
 
-	if (tile.fCost != INT_LEAST16_MAX)
-	{
-		float textFontSize = tileLen * fontSizeMult;
-		sf::Text text(str, font, textFontSize);
-		auto textBox = text.getLocalBounds();
-		auto freeTileSpaceX = tileLen - textBox.width;
-		auto freeTileSpaceY = tileLen - textBox.height;
-		text.setPosition(x + (freeTileSpaceX * xOffset) - textBox.left,
-			y - ((textFontSize + textBox.top) * yOffset) + tileLen * yOffset);
-
-		window.draw(text);
-	}
+	window.draw(text);
 }
 
 Tile& Visualiser::GetTile(int x, int y)

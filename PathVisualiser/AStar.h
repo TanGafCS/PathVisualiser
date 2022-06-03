@@ -13,6 +13,7 @@ public:
 	virtual void Step() override;
 	virtual void Reset() override;
 private:
+	void MarkGoalPath();
 	std::priority_queue<Tile*, std::vector<Tile*>, TileComparator> openSet;
 	TileMap& tileMap;
 	std::vector<std::vector<int>> gCost, hCost, fCost;

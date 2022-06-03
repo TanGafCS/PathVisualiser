@@ -30,6 +30,7 @@ void AStar::Step()
 	{
 		openSet = {};
 		FoundGoal = true;
+		MarkGoalPath();
 		return;
 	}
 
@@ -67,6 +68,7 @@ void AStar::Reset()
 			tile.fCost = INT_LEAST16_MAX;
 
 			tile.isClosed = false;
+			tile.isPath = false;
 		}
 	}
 
@@ -74,4 +76,14 @@ void AStar::Reset()
 	startTile->gCost = 0;
 	startTile->hCost = 0;
 	startTile->fCost = 0;
+}
+
+void AStar::MarkGoalPath()
+{
+	Tile* pathTile = goalTile;
+	while (pathTile)
+	{
+		pathTile->isPath = true;
+		pathTile = pathTile->predecessor;
+	}
 }

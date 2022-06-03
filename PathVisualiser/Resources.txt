@@ -2,3 +2,4 @@
 defaultTile : defaultTile.png
 closedTile : closedTile.png
 obstacleTile : obstacleTile.png
+pathTile : pathTile.png
