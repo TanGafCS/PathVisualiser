@@ -2,6 +2,7 @@
 #include "TileMap.h"
 #include "Visualiser.h"
 #include "AStar.h"
+#include <iostream>
 
 int main()
 {
@@ -13,8 +14,9 @@ int main()
     // instantiate TileMap
     TileMap tileMap(12, 12);
     Pathfinder* pathfinder;
-    AStar aStar(tileMap, tileMap[0][0], tileMap[11][11]);
+    AStar aStar(tileMap, &tileMap[0][0], &tileMap[11][11]);
     pathfinder = &aStar;
+    //AStar pathfinder(tileMap, &tileMap[0][0], &tileMap[11][11]);
 
     while (window.isOpen())
     {
@@ -29,12 +31,10 @@ int main()
                 if (event.key.code == sf::Keyboard::Space)
                 {
                     pathfinder->Step();
+                    std::cout << pathfinder->IsGoalFound() << std::endl;
                 }
             }
         }
-
-        // Run logic updates
-        
 
         // Draw black bg
         sf::Color clearColour(0, 0, 0);

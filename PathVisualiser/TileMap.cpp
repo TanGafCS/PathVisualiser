@@ -57,7 +57,17 @@ std::pair<int, int> TileMap::Size() const
 	return {tiles.size(), tiles[0].size()};
 }
 
-std::vector<Tile> TileMap::operator[](int index) const
+int TileMap::Rows()
+{
+	return tiles.size();
+}
+
+int TileMap::Cols()
+{
+	return tiles[0].size();
+}
+
+std::vector<Tile>& TileMap::operator[](int index)
 {
 	return tiles[index];
 }

@@ -9,6 +9,8 @@ class Pathfinder
 public:
 	//virtual void IsComplete() = 0;
 	virtual void Step() = 0;
-//protected:
-//	TileMap& tileMap;
+	bool IsGoalFound() { return FoundGoal; }
+protected:
+	bool FoundGoal = false;
+	//TileMap& tileMap;
 };

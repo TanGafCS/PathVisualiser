@@ -3,7 +3,7 @@
 #include "ResourceLoader.h"
 #include <iostream>
 
-void Visualiser::DrawMatrix(sf::RenderWindow& window, const TileMap& tileMap)
+void Visualiser::DrawMatrix(sf::RenderWindow& window, TileMap& tileMap)
 {
 	// Scale tiles to fit the screen. Scaled on X axis, assuming X and Y are equal.
 	int rows, cols;
@@ -38,7 +38,7 @@ void Visualiser::DrawMatrix(sf::RenderWindow& window, const TileMap& tileMap)
 
 			// prepare text
 			float textFontSize = tileLen * 0.3;
-			std::string fCostStr = std::string("12");
+			std::string fCostStr = std::to_string(tileMap[row][col].fCost);
 			sf::Text text(fCostStr, font, textFontSize);
 			auto textBox = text.getLocalBounds();
 			auto freeTileSpaceX = tileLen - textBox.width;

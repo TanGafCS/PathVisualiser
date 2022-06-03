@@ -4,7 +4,7 @@
 class Visualiser
 {
 public:
-	void DrawMatrix(sf::RenderWindow&, const TileMap&);
+	void DrawMatrix(sf::RenderWindow&, TileMap&);
 	Visualiser();
 private:
 	sf::Font font;

@@ -7,7 +7,7 @@
 class AStar : public Pathfinder
 {
 public:
-	AStar(TileMap& tileMap, Tile& startTile, Tile& goalTile);
+	AStar(TileMap& tileMap, Tile* startTile, Tile* goalTile);
 	int Distance(Tile& tile1, Tile& tile2);
 	// Inherited via Pathfinder
 	virtual void Step() override;
