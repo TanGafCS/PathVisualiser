@@ -44,7 +44,10 @@ std::vector<Tile*> TileMap::GetNeighbours(Tile& tile)
 			if (i == y && j == x) continue;
 			if (i >= 0 && i < rows && j >= 0 && j < cols)
 			{
-				neighbours.push_back(&tiles[i][j]);
+				if (!tiles[i][j].isObstacle)
+				{
+					neighbours.push_back(&tiles[i][j]);
+				}
 			}
 		}
 	}

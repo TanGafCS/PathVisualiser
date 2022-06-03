@@ -3,7 +3,7 @@
 #include "ResourceLoader.h"
 #include <iostream>
 
-void Visualiser::DrawMatrix(sf::RenderWindow& window, TileMap& tileMap)
+void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 {
 	auto loader = ResourceLoader::Instance();
 	// Scale tiles to fit the screen. Scaled on X axis, assuming X and Y are equal.
@@ -31,6 +31,10 @@ void Visualiser::DrawMatrix(sf::RenderWindow& window, TileMap& tileMap)
 			{
 				tileMap[row][col].texture = &loader.GetTexture("closedTile");
 			}
+			else if (tileMap[row][col].isObstacle)
+			{
+				tileMap[row][col].texture = &loader.GetTexture("obstacleTile");
+			}
 
 			// prepare tile
 			float x = margin + (col * (tileLen + gapLen));
@@ -41,18 +45,22 @@ void Visualiser::DrawMatrix(sf::RenderWindow& window, TileMap& tileMap)
 			sprite.setScale(scale, scale);
 			sprite.setPosition(sf::Vector2f(x, y));
 
-			// prepare text
-			float textFontSize = tileLen * 0.3;
-			std::string fCostStr = std::to_string(tileMap[row][col].fCost);
-			sf::Text text(fCostStr, font, textFontSize);
-			auto textBox = text.getLocalBounds();
-			auto freeTileSpaceX = tileLen - textBox.width;
-			auto freeTileSpaceY = tileLen - textBox.height;
-			text.setPosition(x + (freeTileSpaceX / 2) - textBox.left,
-							y - ((textFontSize + textBox.top) / 2) + tileLen/2);
-
 			window.draw(sprite);
-			window.draw(text);
+			
+			// prepare text
+			if (tileMap[row][col].fCost != INT_LEAST16_MAX)
+			{
+				float textFontSize = tileLen * 0.3;
+				std::string fCostStr = std::to_string(tileMap[row][col].fCost);
+				sf::Text text(fCostStr, font, textFontSize);
+				auto textBox = text.getLocalBounds();
+				auto freeTileSpaceX = tileLen - textBox.width;
+				auto freeTileSpaceY = tileLen - textBox.height;
+				text.setPosition(x + (freeTileSpaceX / 2) - textBox.left,
+								y - ((textFontSize + textBox.top) / 2) + tileLen/2);
+
+				window.draw(text);
+			}
 		}
 	}
 }

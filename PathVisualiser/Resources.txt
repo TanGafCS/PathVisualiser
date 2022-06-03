@@ -1,3 +1,4 @@
 # resource name : resource path
 defaultTile : defaultTile.png
 closedTile : closedTile.png
+obstacleTile : obstacleTile.png

@@ -17,6 +17,7 @@ int main()
     Pathfinder* pathfinder;
     AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
+    tileMap[5][5].isObstacle = true;
 
     while (window.isOpen())
     {
@@ -40,7 +41,7 @@ int main()
         sf::Color clearColour(0, 0, 0);
         window.clear(clearColour);
 
-        visualiser.DrawMatrix(window, tileMap);
+        visualiser.DrawMap(window, tileMap);
 
         window.display();
     }
