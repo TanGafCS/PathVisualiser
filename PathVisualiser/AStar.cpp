@@ -39,6 +39,11 @@ void AStar::Step()
 	if (openSet.empty()) return;	// Finished pathing
 
 	auto* cur = openSet.top();
+	if (cur->isClosed)	// Don't reconsider the closed set.
+	{
+		openSet.pop();
+		Step();
+	}
 	cur->isClosed = true;
 	openSet.pop();
 

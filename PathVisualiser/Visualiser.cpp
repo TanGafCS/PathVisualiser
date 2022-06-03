@@ -27,19 +27,20 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 	{
 		for (int col = 0; col < cols; ++col)
 		{
-			if (tileMap[row][col].isClosed)
+			Tile& tile = tileMap[row][col];
+			if (tile.isClosed)
 			{
-				tileMap[row][col].texture = &loader.GetTexture("closedTile");
+				tile.texture = &loader.GetTexture("closedTile");
 			}
 			else if (tileMap[row][col].isObstacle)
 			{
-				tileMap[row][col].texture = &loader.GetTexture("obstacleTile");
+				tile.texture = &loader.GetTexture("obstacleTile");
 			}
 
 			// prepare tile
 			float x = margin + (col * (tileLen + gapLen));
 			float y = margin + (row * (tileLen + gapLen));
-			sf::Texture& tex = *tileMap[row][col].texture;
+			sf::Texture& tex = *tile.texture;
 			sf::Sprite sprite;
 			sprite.setTexture(tex);
 			sprite.setScale(scale, scale);
@@ -48,20 +49,27 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap)
 			window.draw(sprite);
 			
 			// prepare text
-			if (tileMap[row][col].fCost != INT_LEAST16_MAX)
-			{
-				float textFontSize = tileLen * 0.3;
-				std::string fCostStr = std::to_string(tileMap[row][col].fCost);
-				sf::Text text(fCostStr, font, textFontSize);
-				auto textBox = text.getLocalBounds();
-				auto freeTileSpaceX = tileLen - textBox.width;
-				auto freeTileSpaceY = tileLen - textBox.height;
-				text.setPosition(x + (freeTileSpaceX / 2) - textBox.left,
-								y - ((textFontSize + textBox.top) / 2) + tileLen/2);
-
-				window.draw(text);
-			}
+			DrawCost(tile, tileLen, x, y, window, 0.4, 0.5, 0.5, std::to_string(tile.fCost));
+			DrawCost(tile, tileLen, x, y, window, 0.225, 0.9, 1.08, std::to_string(tile.hCost));
+			DrawCost(tile, tileLen, x, y, window, 0.225, 0.1, 1.08, std::to_string(tile.gCost));
 		}
+	}
+}
+
+void Visualiser::DrawCost(Tile& tile, float tileLen, float x, float y, sf::RenderWindow& window, float fontSizeMult, float xOffset, float yOffset, std::string str)
+{
+
+	if (tile.fCost != INT_LEAST16_MAX)
+	{
+		float textFontSize = tileLen * fontSizeMult;
+		sf::Text text(str, font, textFontSize);
+		auto textBox = text.getLocalBounds();
+		auto freeTileSpaceX = tileLen - textBox.width;
+		auto freeTileSpaceY = tileLen - textBox.height;
+		text.setPosition(x + (freeTileSpaceX * xOffset) - textBox.left,
+			y - ((textFontSize + textBox.top) * yOffset) + tileLen * yOffset);
+
+		window.draw(text);
 	}
 }
 

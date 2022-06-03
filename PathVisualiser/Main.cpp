@@ -12,8 +12,9 @@ int main()
     Visualiser visualiser;
 
     // instantiate TileMap
-    int rows = 8, cols = 8;
-    TileMap tileMap(8, 8);
+    int rows, cols;
+    rows = cols = 12;
+    TileMap tileMap(rows, cols);
     Pathfinder* pathfinder;
     AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
@@ -31,7 +32,7 @@ int main()
                 window.close();
             if (event.type == sf::Event::EventType::KeyPressed)
             {
-                if (event.key.code == sf::Keyboard::Space)
+                if (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::N)
                 {
                     pathfinder->Step();
                     std::cout << pathfinder->IsGoalFound() << std::endl;
