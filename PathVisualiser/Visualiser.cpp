@@ -5,6 +5,7 @@
 
 void Visualiser::DrawMatrix(sf::RenderWindow& window, TileMap& tileMap)
 {
+	auto loader = ResourceLoader::Instance();
 	// Scale tiles to fit the screen. Scaled on X axis, assuming X and Y are equal.
 	int rows, cols;
 	std::tie(rows, cols) = tileMap.Size();
@@ -21,16 +22,20 @@ void Visualiser::DrawMatrix(sf::RenderWindow& window, TileMap& tileMap)
 	//ResourceLoader& resources = ResourceLoader::Instance();
 
 	float scale = tileLen / tileSizeDefault;
-
 	// Place tiles onto screen.
 	for (int row = 0; row < rows; ++row)
 	{
 		for (int col = 0; col < cols; ++col)
 		{
+			if (tileMap[row][col].isClosed)
+			{
+				tileMap[row][col].texture = &loader.GetTexture("closedTile");
+			}
+
 			// prepare tile
 			float x = margin + (col * (tileLen + gapLen));
 			float y = margin + (row * (tileLen + gapLen));
-			sf::Texture& tex = tileMap[row][col].texture;
+			sf::Texture& tex = *tileMap[row][col].texture;
 			sf::Sprite sprite;
 			sprite.setTexture(tex);
 			sprite.setScale(scale, scale);

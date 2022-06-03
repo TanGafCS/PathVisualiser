@@ -7,16 +7,16 @@
 int main()
 {
     // initialise visualiser
-    sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "SFML works!", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(screenSideLength, screenSideLength), "Pathfinding Visualiser", sf::Style::Close);
     window.setKeyRepeatEnabled(false);
     Visualiser visualiser;
 
     // instantiate TileMap
-    TileMap tileMap(12, 12);
+    int rows = 8, cols = 8;
+    TileMap tileMap(8, 8);
     Pathfinder* pathfinder;
-    AStar aStar(tileMap, &tileMap[0][0], &tileMap[11][11]);
+    AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
-    //AStar pathfinder(tileMap, &tileMap[0][0], &tileMap[11][11]);
 
     while (window.isOpen())
     {

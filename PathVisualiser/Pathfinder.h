@@ -1,9 +1,6 @@
 #pragma once
 #include "TileMap.h"
 
-/// <summary>
-/// Manipulates the
-/// </summary>
 class Pathfinder
 {
 public:

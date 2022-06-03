@@ -6,8 +6,9 @@ struct Tile
 public:
 	int x, y;	// Position
 	int fCost;
+	bool isObstacle = false, isClosed = false;
 	Tile* predecessor;	// Set when pathing.
-	sf::Texture& texture;
+	sf::Texture* texture;
 	Tile(int x, int y, sf::Texture&);
 	//~Tile();
 };
