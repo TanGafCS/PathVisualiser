@@ -18,6 +18,8 @@ int main()
     AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
     tileMap[5][5].isObstacle = true;
+    tileMap[4][5].isObstacle = true;
+    tileMap[6][5].isObstacle = true;
 
     while (window.isOpen())
     {

@@ -2,25 +2,28 @@
 #include <iostream>
 
 AStar::AStar(TileMap& tileMap, Tile* start, Tile* goal)
-	: openSet(), tileMap(tileMap), startTile(*start), goalTile(*goal),
-	gCost(tileMap.Rows(), std::vector<int>(tileMap.Cols(), INT_LEAST16_MAX)),
-	hCost(tileMap.Rows(), std::vector<int>(tileMap.Cols(), INT_LEAST16_MAX))
+	: openSet(), tileMap(tileMap), startTile(start), goalTile(goal)
 {
-	this->openSet.push(start);
-
-	// Set starting tile's gcost
-	gCost[start->y][start->x] = 0;
-	start->fCost = 0;
+	this->openSet.push(startTile);
 
 	/*	Set tiles' hcosts. Use Distance function - it does not
 		overestimate the actual cost, and will return the least-cost path. */
-	for (size_t i = 0; i < tileMap.Cols(); i++)
+	for (int i = 0; i < tileMap.Cols(); i++)
 	{
-		for (size_t j = 0; j < tileMap.Rows(); j++)
+		for (int j = 0; j < tileMap.Rows(); j++)
 		{
-			hCost[i][j] = Distance(*goal, tileMap[i][j]);
+			Tile& tile = tileMap[i][j];
+			auto hc = Distance(*goal, tileMap[i][j]);
+			tile.hCost = hc;
+
+			tile.gCost = INT_LEAST16_MAX;
 		}
 	}
+
+	// Set starting tile's costs
+	startTile->gCost = 0;
+	startTile->hCost = 0;
+	startTile->fCost = 0;
 }
 
 int AStar::Distance(Tile& tile1, Tile& tile2)
@@ -39,7 +42,7 @@ void AStar::Step()
 	cur->isClosed = true;
 	openSet.pop();
 
-	if (cur == &goalTile)
+	if (cur == goalTile)
 	{
 		openSet = {};
 		FoundGoal = true;
@@ -51,19 +54,15 @@ void AStar::Step()
 	{
 		Tile* neighbour = neighbours[i];
 		int x = neighbour->x, y = neighbour->y;
-		int potentialGCost = gCost[cur->y][cur->x] + Distance(*cur, *neighbour);
+		int potentialGCost = cur->gCost + Distance(*cur, *neighbour);
 
-		if (potentialGCost < gCost[neighbour->y][neighbour->x])
+		if (potentialGCost < neighbour->gCost)
 		{
-			gCost[neighbour->y][neighbour->x] = potentialGCost;
-			neighbour->fCost = gCost[neighbour->y][neighbour->x] + hCost[neighbour->y][neighbour->x];
+			neighbour->gCost = potentialGCost;
+			//neighbour->hCost = hCost[neighbour->y][neighbour->x];
+			neighbour->fCost = neighbour->gCost + neighbour->hCost;
 			neighbour->predecessor = cur;
 			openSet.push(neighbour);
 		}
 	}
-	//for (Tile& tile : neighbours)
-	//{
-	//	int x = tile.x, y = tile.y;
-	//	int potentialGCost = gCost[cur.y][cur.x] + Distance(cur, tile);
-	//}
 }

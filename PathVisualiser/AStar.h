@@ -13,7 +13,7 @@ public:
 	virtual void Step() override;
 private:
 	std::priority_queue<Tile*, std::vector<Tile*>, TileComparator> openSet;
-	Tile& startTile, & goalTile;
+	Tile* startTile, * goalTile;
 	TileMap& tileMap;
 	std::vector<std::vector<int>> gCost, hCost, fCost;
 };
