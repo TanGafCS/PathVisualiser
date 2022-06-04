@@ -13,14 +13,25 @@ int main()
 
     // instantiate TileMap
     int rows, cols;
-    rows = cols = 12;
+    rows = cols = 6;
     TileMap tileMap(rows, cols);
     Pathfinder* pathfinder;
     AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
+    
+    //float delay = 0.3f;
+    //sf::Clock clock;
+    //sf::Time start = clock.getElapsedTime();
 
     while (window.isOpen())
     {
+        //sf::Time timeSinceLastTick = clock.getElapsedTime();
+        //if (timeSinceLastTick.asSeconds() - start.asSeconds() > delay)
+        //{
+        //    clock.restart();
+        //    pathfinder->Step();
+        //}
+
         // Handle Inputs
         sf::Event event;
         auto mPos = sf::Mouse::getPosition(window);
