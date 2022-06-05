@@ -3,8 +3,8 @@ Step-by-step pathfinding algorithm visualiser written in C++ with the SFML libra
 
 <br>
 <p align="center">
-  <img width="500" height="500" alt="A* Pathfinding Visualiser" src="readme_resources/PV1.gif">
-  <img width="500" height="500" alt="A* Pathfinding Visualiser" src="readme_resources/PV2.gif">
+  <img width="45%" alt="A* Pathfinding Visualiser" src="readme_resources/PV1.gif">
+  <img width="45%" alt="A* Pathfinding Visualiser" src="readme_resources/PV2.gif">
 </p>
 
 ## Controls
