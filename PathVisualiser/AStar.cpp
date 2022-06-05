@@ -11,7 +11,7 @@ int AStar::Distance(Tile& tile1, Tile& tile2)
 {
 	float x1 = tile1.x, x2 = tile2.x, y1 = tile1.y, y2 = tile2.y;
 	float xDiff = std::abs(x1 - x2), yDiff = std::abs(y1 - y2);
-	float dist = std::sqrtf((xDiff * xDiff) + (yDiff * yDiff)) * 10;
+	float dist = std::sqrtf((xDiff * xDiff) + (yDiff * yDiff)) * 1000;
 	return (int)dist;
 }
 
@@ -64,8 +64,8 @@ void AStar::Reset()
 			Tile& tile = tileMap[i][j];
 			auto hc = Distance(*goalTile, tileMap[i][j]);
 			tile.hCost = hc;
-			tile.gCost = INT_LEAST16_MAX;
-			tile.fCost = INT_LEAST16_MAX;
+			tile.gCost = INT_LEAST32_MAX;
+			tile.fCost = INT_LEAST32_MAX;
 
 			tile.isClosed = false;
 			tile.isPath = false;

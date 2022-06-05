@@ -4,6 +4,7 @@ Step-by-step pathfinding algorithm visualiser written in C++ with the SFML libra
 <br>
 <p align="center">
   <img width="500" height="500" alt="A* Pathfinding Visualiser" src="readme_resources/PV1.gif">
+  <img width="500" height="500" alt="A* Pathfinding Visualiser" src="readme_resources/PV2.gif">
 </p>
 
 ## Controls
@@ -13,6 +14,7 @@ Step-by-step pathfinding algorithm visualiser written in C++ with the SFML libra
 | S | Set start tile. |
 | G | Set goal tile. |
 | Space/N | Step through pathfinder. |
+| A | Toggle auto-step. |
 | Mouse Click | Toggle obstacle. |
 
 <br>

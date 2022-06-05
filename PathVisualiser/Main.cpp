@@ -13,24 +13,32 @@ int main()
 
     // instantiate TileMap
     int rows, cols;
-    rows = cols = 6;
+    rows = cols = 16;
     TileMap tileMap(rows, cols);
     Pathfinder* pathfinder;
     AStar aStar(tileMap, &tileMap[0][0], &tileMap[rows-1][cols-1]);
     pathfinder = &aStar;
     
-    //float delay = 0.3f;
-    //sf::Clock clock;
-    //sf::Time start = clock.getElapsedTime();
+    bool isAutoStep = false;
+    float delay = 0.08f;
+    sf::Clock clock;
+    sf::Time start = clock.getElapsedTime();
 
     while (window.isOpen())
     {
-        //sf::Time timeSinceLastTick = clock.getElapsedTime();
-        //if (timeSinceLastTick.asSeconds() - start.asSeconds() > delay)
-        //{
-        //    clock.restart();
-        //    pathfinder->Step();
-        //}
+        if (isAutoStep)
+        {
+            sf::Time timeSinceLastTick = clock.getElapsedTime();
+            if (timeSinceLastTick.asSeconds() - start.asSeconds() > delay)
+            {
+                clock.restart();
+                pathfinder->Step();
+            }
+        }
+        else
+        {
+            clock.restart();
+        }
 
         // Handle Inputs
         sf::Event event;
@@ -44,6 +52,10 @@ int main()
             Tile& hoverTile = visualiser.GetTile(mPos.x, mPos.y);
             if (event.type == sf::Event::EventType::KeyPressed)
             {
+                if (event.key.code == sf::Keyboard::A)
+                {
+                    isAutoStep = !isAutoStep;
+                }
                 if (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::N)
                 {
                     pathfinder->Step();

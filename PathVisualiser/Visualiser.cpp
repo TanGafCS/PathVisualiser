@@ -56,11 +56,11 @@ void Visualiser::DrawMap(sf::RenderWindow& window, TileMap& tileMap, Pathfinder&
 			window.draw(sprite);
 			
 			// prepare text
-			if (tile.fCost != INT_LEAST16_MAX)
+			if (tile.fCost != INT_LEAST32_MAX)
 			{
-				DrawTileText(tile, tileLen, x, y, window, 0.4, 0.5, 0.5, std::to_string(tile.fCost));
-				DrawTileText(tile, tileLen, x, y, window, 0.225, 0.9, 1.08, std::to_string(tile.hCost));
-				DrawTileText(tile, tileLen, x, y, window, 0.225, 0.1, 1.08, std::to_string(tile.gCost));
+				DrawTileText(tile, tileLen, x, y, window, 0.4, 0.5, 0.5, std::to_string(tile.fCost / 100));
+				DrawTileText(tile, tileLen, x, y, window, 0.225, 0.9, 1.08, std::to_string(tile.hCost / 100));
+				DrawTileText(tile, tileLen, x, y, window, 0.225, 0.1, 1.08, std::to_string(tile.gCost / 100));
 			}
 
 
